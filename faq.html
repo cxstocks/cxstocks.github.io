@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>CxStocks</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/main.css" rel="stylesheet">
+
+  </head>
+
+  <body id="page-top">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="index.html">CxStocks</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <i class="fa fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="faq.html">FAQ</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="stocks.html">Stocks</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="player.html">Player</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="leaderboard.html">Leaderboard</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Intro Header -->
+    <header class="masthead">
+      <div class="intro-body">
+        <div id="faq" class="container">
+          <div class="alert alert-secondary" role="alert">
+            <h4 class="alert-heading">What is this?</h4>
+            <p>CxStocks is a minigame played on the Ice Poseidon subreddit.
+               Ice Poseidon is a livestreamer who interacts with many people during his livestreams.
+                The main people who he interacts with have stocks in this game including Ice.
+                The idea of the game is when a person on the stream does something good or is liked by the community,
+                 the community should buy the person's stocks so it's price increases and sell their stock when they are disliked.
+                </p>
+          </div>
+          <div class="alert alert-secondary" role="alert">
+            <h4 class="alert-heading">How does the game work?</h4>
+            <p>
+              Each player in the game starts of with 10 stocks of each character and $10000 in their holding.
+              When a player sells stock of a character, it loses its price and when a player buys stock of a character, it increases its price.
+              The ratio of the price change is 1:0.1 meaning 1 stock that is brought or sold will make the price change by $0.1.
+            </p>
+            <hr />
+            <p>
+            Example: If Ice's stock price is $100 and a player buys 1 worth of stock, Ice's stock price is now $100 + $0.1 = $100.10 <br />
+            Example: If Ice's stock price is $50 and a player sells 0.5 worth of stock, Ice's stock price is now $50 - $0.05 = $49.95 <br />
+            Example: If Ice's stock price is $20 and a player buys 10 worth of stock, Ice's stock price is now $20 + $1 = $21
+            </p>
+            <hr />
+            <p>
+              When you sell your stocks, you will have increased your holding and will be able to purchase other stocks using this holding.
+              A player's total value is equal to the holding and the worth of their stocks. A player's stock is worth by the quantity multiplied by the stock price.
+            </p>
+            <br />
+            <p>
+            Example: Ice's stock price is currently $100, Brandon's stock price is currently $200<br />
+            If a player has 2 Ice stocks, 1.5 Brandon stocks and $200 in holdings, <br />
+            The total value of the player's portfolio is (2 * 100) + (1.5 * 200) + 200 = $700.
+            </p>
+            <hr />
+            <p>
+              The goal of the game is for a player to get the highest portfolio worth compared to other players. The highest value players will have their name shown in the leaderboards.
+            </p>
+          </div>
+          <div class="alert alert-secondary" role="alert">
+            <h4 class="alert-heading">How do I play?</h4>
+            <p>
+              The game is played by posting or replying to comments in the subreddit in ANY submission. There is a script running which is scanning new comments. These comments will trigger executions by a bot which will make buy/sell trades. Please make sure all comments are upper-case.
+            </p>
+            <p>You need a reddit account which is 7 days old (This is to prevent price manipulation).
+              To register for the game, post a comment or reply in any post in Ice's subreddit by typing exactly <span class="highlight">!REGISTER CXSTOCKS</span>. If correctly done, you should see your portfolio in the <a href="player.html">Player page</a> by entering your reddit username.
+              </p>
+              <p>
+                To buy a stock or sell a stock, a comment must be posted exactly in this format: <span class="highlight">!&lt;TYPE&gt; &lt;SYMBOL&gt; &lt;QUANTITY&gt;</span> <br />
+                <span class="highlight">TYPE</span> can be either <span class="highlight">BUY</span> or <span class="highlight">SELL</span> <br />
+                <span class="highlight">SYMBOL</span> can be any symbol associated with a stock. You can see the symbols in the <a href="stocks.html">Stocks page</a> <br />
+                <span class="highlight">QUANTITY</span> is the amount of stock you want to buy or sell. The value should be a positive number and will be cut to two decimal places.
+
+                </p>
+                      <p>
+                Example - To buy 1 worth of Ice stock: <span class="highlight">!BUY ICE 1</span> <br />
+                Example - To sell 2.5 worth of Brandon stock: <span class="highlight">!SELL TTD 2.5</span>
+              </p>
+              <p>
+                If a player does not have enough stocks that they can sell or does not have enough cash holdings to buy a stock, their command is ignored and nothing happens.
+                 The price of the stock will be constantly changing so by the time your buy/sell comment gets processed, so the stock you are targetting, might not be the price at the time of the comment.
+              </p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="js/app.js"></script>
+  </body>
+
+</html>

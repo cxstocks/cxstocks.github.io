@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>CxStocks</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="css/main.css" rel="stylesheet">
+
+  </head>
+
+  <body id="page-top">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="index.html">CxStocks</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <i class="fa fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="faq.html">FAQ</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="stocks.html">Stocks</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="player.html">Player</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="leaderboard.html">Leaderboard</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Intro Header -->
+    <header class="masthead">
+      <div class="intro-body">
+        <div id="loader" class="container">
+            <div class="spinner">
+          <div class="cube1"></div>
+          <div class="cube2"></div>
+          </div>
+        </div>
+        <div class="container">
+
+
+            <table id="stocks">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Symbol</th>
+              <th scope="col">Price ($)</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+
+        </div>
+
+      </div>
+    </header>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="js/app.js"></script>
+    <script>
+    $(document).ready(function() {
+      updateStocks();
+      setInterval(function(){
+        updateStocks();
+      }, 5000);
+
+       function updateStocks() {
+         $.ajax({
+              url: 'http://159.65.230.56:8080/stocks',
+              success: function(stocks) {
+                var tbody = $('#stocks tbody');
+                 $(tbody).empty();
+                  for(var i = 0; i < stocks.length; i++) {
+                    var stock = stocks[i];
+                    var tableRow = $("<tr>")
+                    var name = $("<td>")
+                    $(name).html(stock['name'])
+                      var symbol = $("<td>")
+
+
+                    $(symbol).html(stock['symbol'])
+                    var price = $("<td>")
+                    $(price).addClass('price-stock')
+                    $(price).html(stock['price'].cround())
+
+                    $(tableRow).append(name);
+                    $(tableRow).append(symbol);
+
+                    $(tableRow).append(price);
+                    $(tbody).append(tableRow);
+                  }
+
+                  $('#loader').fadeOut(300, function() {
+                    $('#stocks').fadeIn();
+                  });
+              }
+          });
+       }
+
+    });
+    </script>
+  </body>
+
+</html>

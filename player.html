@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>CxStocks</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="css/main.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand js-scroll-trigger" href="index.html">CxStocks</a>
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <i class="fa fa-bars"></i>
+        </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="faq.html">FAQ</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="stocks.html">Stocks</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="player.html">Player</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="leaderboard.html">Leaderboard</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Intro Header -->
+  <header class="masthead">
+
+    <div id="loader" class="container" style="display:none">
+        <div class="spinner">
+      <div class="cube1"></div>
+      <div class="cube2"></div>
+      </div>
+    </div>
+
+    <div class="intro-body">
+      <div id="username-container" class="container">
+        <div class="card">
+          <div id="username-card" class="card-body">
+            <h4><span id="username"></span></h4>
+          </div>
+        </div>
+      </div>
+
+      <div id="data" class="container">
+        <div class="row">
+          <div class="col-sm-7">
+            <ul id="portfolio" class="list-group">
+              <li class="list-group-item portfolio-header">
+                Portfolio
+              </li>
+            </ul>
+          </div>
+          <div class="col-sm-5">
+            <ul id="transactions-data" class="list-group">
+              <li class="list-group-item portfolio-header">
+                Transactions
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div id="error" class="container">
+        <div class="alert alert-danger" role="alert">
+          <h4 class="alert-heading">Error</h4>
+          <p id="error-text"></p>
+        </div>
+      </div>
+      <div id="search" class="container text-center">
+        <div class="input-group sm-2">
+          <input id="username-input" type="text" class="form-control" placeholder="Reddit Username">
+          <div class="input-group-append">
+            <button id="search-btn" class="btn btn-outline-info" type="button">Search</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Plugin JavaScript -->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for this template -->
+  <script src="js/app.js"></script>
+  <script>
+    $(document).ready(function() {
+      if (window.location.search.indexOf('?username=') > -1) {
+        var split = window.location.search.split("=");
+        var username = split[1];
+        $.ajax({
+          url: 'http://159.65.230.56:8080/user/' + username,
+          success: function(player) {
+
+            $.ajax({
+              url: 'http://159.65.230.56:8080/stocks',
+              success: function(stocks) {
+                var portFolioValue = 0;
+                var portfolio = $('#portfolio');
+                var playerStock;
+                var symbol;
+                var quantity;
+                var price;
+                var img;
+                var name;
+
+                for (var i = -1; i < player['portfolio']['stocks'].length; i++) {
+                  if (i >= 0) {
+                    playerStock = player['portfolio']['stocks'][i];
+                    symbol = playerStock['symbol']
+                    quantity = playerStock['quantity']
+                    price;
+                    img;
+                    name;
+                    for (var j = 0; j < stocks.length; j++) {
+                      if (symbol === stocks[j]['symbol']) {
+                        price = quantity * stocks[j]['price'];
+                        portFolioValue += price;
+                        img = 'img/' + stocks[j]['img'];
+                        name = stocks[j]['name'];
+                        break;
+                      }
+                    }
+                  } else {
+                    name = 'Holding'
+                    img = 'img/' + "dollar.png";
+                    price = player['portfolio']['holdings'];
+                  }
+
+
+
+                  var listItem = $("<li>")
+                  $(listItem).addClass("list-group-item");
+                  var listDiv = $("<div>")
+                  $(listDiv).addClass("left-right");
+                  var stockImg = $("<img>")
+                  $(stockImg).attr("src", img);
+                  var stockName = $("<span>")
+                  $(stockName).addClass("stock-name");
+                  $(stockName).html(name);
+                  var stockContainer = $("<div>")
+                  $(stockContainer).addClass("stock");
+                  var stockPrice = $("<span>")
+                  $(stockPrice).addClass("stock-price");
+                  $(stockPrice).html('$' + price.cround());
+                  var stockQuantity = $("<span>")
+                  $(stockQuantity).addClass("stock-quantity");
+                  if (quantity != undefined) $(stockQuantity).html(quantity.cround() + ' ' + symbol);
+                  if (i >= 0) {
+                    $(stockContainer).append(stockQuantity)
+                  } else {
+                    $(stockPrice).addClass("stock-price-holding");
+                  }
+                  $(stockContainer).append(stockPrice)
+
+                  $(listDiv).append(stockImg)
+                  $(listDiv).append(stockName)
+                  $(listDiv).append(stockContainer)
+
+                  $(listItem).append(listDiv)
+
+                  $(portfolio).append(listItem);
+
+
+                }
+                var holdings = player['portfolio']['holdings'];
+                var listItem = $("<li>")
+                $(listItem).addClass("list-group-item");
+                $(listItem).addClass("portfolio-value");
+                var portFolioValueText = $("<span>")
+                $(portFolioValueText).attr("id", "portfolio-value");
+                $(portFolioValueText).html('Portfolio Value ~ $' + (portFolioValue + holdings).cround());
+
+                $(listItem).append(portFolioValueText);
+                $(portfolio).append(listItem);
+
+
+                portFolioValue += holdings;
+                $("#username").html(username)
+
+
+                $('#loader').fadeOut(300, function() {
+                  $("#data").fadeIn();
+                  $("#username-container").fadeIn();
+                });
+              }
+            });
+
+            var transactions = player['transactions'];
+            var transactionData = $('#transactions-data')
+
+            if(transactions.length == 0) {
+              var listItem = $("<li>")
+              $(listItem).addClass("list-group-item");
+              $(listItem).addClass("left-right");
+              var noTransactionsText = $("<span>")
+              $(noTransactionsText).html("No transactions found")
+              $(noTransactionsText).addClass('text-secondary');
+              $(listItem).append(noTransactionsText)
+              $(transactionData).append(listItem)
+            }
+            var transactionCount = 0;
+            for(var i = transactions.length - 1; i >= 0; i--) {
+              if(transactionCount >= 10) break;
+              var transaction = transactions[i];
+              var listItem = $("<li>")
+              $(listItem).addClass("list-group-item");
+              $(listItem).addClass("left-right");
+              var transactionDay = $("<span>")
+              $(transactionDay).html(transaction['day'])
+              $(transactionDay).addClass('transaction-day');
+              var transactionType = $("<span>")
+              $(transactionType).html(transaction['type'])
+              $(transactionType).addClass('transaction-info');
+              var transactionQuantity = $("<span>")
+              if(transaction['type'] === 'BUY') {
+                $(transactionQuantity).html("+" + transaction['quantity'] + ' ' + transaction['symbol'])
+                $(transactionType).addClass('transaction-buy');
+              }
+              if(transaction['type'] === 'SELL') {
+                $(transactionQuantity).html("-" + transaction['quantity'] + ' ' + transaction['symbol'])
+                $(transactionType).addClass('transaction-sell');
+              }
+
+              $(transactionQuantity).addClass('transaction-quantity');
+
+              $(listItem).append(transactionDay)
+              $(listItem).append(transactionType)
+              $(listItem).append(transactionQuantity)
+
+              $(transactionData).append(listItem)
+              transactionCount++;
+            }
+
+
+
+          },
+          error: function(err) {
+            $('#error-text').html('<b>' + username + '</b> is not registered');
+            $('#error').show();
+          },
+        });
+      } else {
+        $("#loader").hide();
+        $(search).show();
+        $("#search-btn").click(function() {
+          var username = $('#username-input').val();
+          window.location.replace('/player.html?username=' + username);
+        });
+        $('#username-input').keydown(function(event) {
+          // enter has keyCode = 13, change it if you want to use another button
+          if (event.keyCode == 13) {
+            var username = $('#username-input').val();
+            window.location.replace('/player.html?username=' + username);
+            return false;
+          }
+        });
+        $('#username-input').focus();
+      }
+
+
+    });
+  </script>
+</body>
+
+</html>
